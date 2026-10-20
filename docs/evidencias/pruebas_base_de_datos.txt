@@ -1,0 +1,104 @@
+▶ Creando base de pruebas miraliz_test
+▶ Aplicando migraciones
+   · 20261020000100_schema.sql
+   · 20261020000200_indexes.sql
+   · 20261020000300_core_functions_triggers.sql
+   · 20261020000400_business_rpc.sql
+   · 20261020000500_security_rls.sql
+   · 20261020000600_storage.sql
+   · 20261020000700_default_settings.sql
+   · 20261020000800_settings_validation.sql
+▶ Cargando datos de demostración
+▶ Ejecutando pruebas funcionales y de seguridad
+OK  T01 el registro ignora un rol "admin" enviado en metadata
+OK  T02 no se puede crear un segundo administrador por bootstrap  →  Ya existe un administrador. Use el panel de administración para gestionar roles.
+OK  T03 una receta solo admite ítems de tipo material  →  Solo se pueden usar ítems de tipo material en una receta.
+OK  T04 CHECK impide existencias negativas  →  new row for relation "stock_items" violates check constraint "stock_quantity_non_negative"
+OK  T05 CHECK impide reservar más de lo existente  →  new row for relation "stock_items" violates check constraint "stock_reserved_le_quantity"
+OK  T06 un producto publicado debe tener precio  →  new row for relation "products" violates check constraint "products_published_has_price"
+OK  T07 anon ve solo productos publicados (2 de 3)
+OK  T08 anon no puede leer el inventario  →  permission denied for table stock_items
+OK  T09 anon no puede leer pedidos  →  permission denied for table orders
+OK  T10 anon consulta disponibilidad mediante catalog_availability()
+OK  T11 cotización de entrega dentro de cobertura
+OK  T12 el cliente no puede cambiar su rol  →  permission denied for table profiles
+OK  T13 el cliente edita su nombre
+OK  T14 el cliente no puede ejecutar funciones de administrador  →  Operación permitida solo para el administrador.
+OK  T15 el cliente no puede confirmar pagos del proveedor  →  permission denied for function payment_apply_provider_result
+OK  T16 el cliente no puede crear inventario  →  new row violates row-level security policy for table "stock_items"
+OK  T17 no se puede agregar al carrito de otro usuario  →  new row violates row-level security policy for table "cart_items"
+OK  T18 entrega fuera de cobertura rechazada  →  La ubicación está fuera del área de cobertura (196.72 km en línea recta).
+OK  T19 pedido creado con precio y tarifa recalculados en el servidor
+OK  T20 reintento con la misma clave no duplica el pedido (idempotencia)
+OK  T21 el carrito se vacía al confirmar
+OK  T22 se reservan 2 unidades (disponible 1)
+OK  T23 cliente B no ve pedidos de A
+OK  T24 cliente B no ve direcciones de A
+OK  T25 cliente B solo ve su propio perfil
+OK  T26 sobreventa impedida: se piden 2 con 1 disponible  →  Existencias insuficientes: Vasos prueba (necesario 2, disponible 1.000 paquete)
+OK  T27 cliente B no puede cancelar el pedido de A  →  Pedido no encontrado.
+OK  T28 fecha de entrega inviable para un personalizado  →  La fecha solicitada no es viable. La fecha más próxima disponible es 21/10/2026.
+OK  T29 fecha prometida calculada con la capacidad y la receta
+OK  T30 se reserva el material de la receta (1 plancha)
+OK  T31 no se puede subir a la carpeta de otro cliente  →  new row violates row-level security policy for table "objects"
+OK  T32 la imagen de referencia debe pertenecer al cliente  →  La imagen de referencia no pertenece a su cuenta.
+OK  T33 la solicitud queda en "cotización pendiente" sin precio
+OK  T34 no se puede pagar una cotización pendiente  →  El pedido no admite pagos en su estado actual.
+OK  T35 cliente B no puede ver el diseño de A
+OK  T36 el administrador no puede proponer una fecha inviable  →  Con la carga actual, la fecha más próxima viable es 21/10/2026.
+OK  T37 el administrador puede ver el diseño de referencia
+OK  T38 cliente B no puede responder la cotización de A  →  Cotización no encontrada.
+OK  T39 el cliente acepta la cotización
+OK  T40 la aceptación fija precio, anticipo (50 %) y fecha
+OK  T41 el cliente no puede modificar pagos directamente  →  permission denied for table payments
+OK  T42 monto menor al anticipo rechazado  →  Monto inválido: debe estar entre Bs 90.00 y Bs 180.00.
+OK  T43 reintento del intento de pago no lo duplica
+OK  T44 QR generado queda pendiente (un contador no lo aprueba)
+OK  T45 el cliente no puede aprobar su propio QR de prueba  →  Operación permitida solo para el administrador.
+OK  T46 tarjeta deshabilitada hasta configurar el proveedor  →  El pago con tarjeta no está habilitado.
+OK  T47 el administrador confirma el QR de prueba
+OK  T48 el anticipo confirma el pedido y actualiza el saldo
+OK  T49 se crean las tareas de producción por etapa (corte y decoración)
+OK  T50 un monto confirmado distinto al intento se rechaza
+OK  T51 un webhook repetido (mismo evento) se ignora
+OK  T52 webhook válido aprueba el pago con tarjeta
+OK  T53 saldo pendiente tras anticipo y pago parcial
+OK  T54 el administrador no puede quitarse su propio rol  →  No puede cambiar su propio rol ni desactivar su propia cuenta.
+OK  T55 el empleado no lee la tabla de pedidos (datos financieros)
+OK  T56 el empleado no ve pagos
+OK  T57 el empleado ve sus 2 tareas asignadas
+OK  T58 el empleado asignado puede ver el diseño de referencia
+OK  T59 el empleado no puede cambiar el estado del pedido directamente  →  Operación permitida solo para el administrador.
+OK  T60 al iniciar una tarea el pedido pasa a "en producción"
+OK  T61 se consumen los 2 materiales reservados (5 → 3; queda la reserva del pedido B)
+OK  T62 una tarea completada no se reabre  →  La tarea ya fue completada.
+OK  T63 al completar todas las tareas el pedido queda "listo"
+OK  T64 no se entrega un pedido con saldo pendiente  →  No se puede entregar: el pedido tiene un saldo pendiente de Bs 50.00.
+OK  T65 no se puede cobrar más que el saldo  →  Monto inválido. Saldo pendiente: Bs 50.00.
+OK  T66 pedido entregado con saldo cero
+OK  T67 transición inválida desde "entregado"  →  Transición de estado no permitida: entregado → listo.
+OK  T68 cancelar libera la reserva de productos
+OK  T69 la reserva queda marcada como liberada (no se libera dos veces)
+OK  T70 mostrador: no se vende más de lo disponible  →  Stock insuficiente de "Vasos prueba": disponible 3.000, solicitado 4.
+OK  T71 venta de mostrador idempotente
+OK  T72 venta de mostrador registrada y pagada
+OK  T73 un ajuste requiere motivo  →  Todo ajuste manual requiere un motivo (mínimo 5 caracteres).
+OK  T74 un ajuste no puede tocar unidades reservadas  →  No se puede descontar 3: solo hay 2.000 disponibles (1.000 reservados) de "Plastoformo prueba".
+OK  T75 el ajuste queda en auditoría
+OK  T76 trazabilidad: entrada, 2 reservas, consumo y ajuste del material
+OK  T77 el cliente no puede leer la auditoría
+OK  T78 nadie escribe la auditoría desde la API  →  permission denied for table audit_log
+OK  T79 historial de estados del pedido completo
+OK  T80 un QR vencido se marca como expirado
+OK  T81 mantenimiento cancela reservas vencidas sin pago
+OK  T82 la reserva de material vuelve a estar disponible
+OK  T83 panel: ingresos cobrados = 90 + 40 + 50 + 20
+OK  T84 configuración: anticipo fuera de rango rechazado en el servidor  →  El anticipo debe estar entre 0 y 100 %.
+OK  T85 configuración: el QR de prueba no puede usarse en producción  →  El proveedor QR de prueba no puede usarse en modo producción.
+OK  T86 configuración: cobertura negativa rechazada  →  La cobertura debe estar entre 0 y 100 km.
+OK  T87 un cliente no puede modificar la configuración (RLS: 0 filas afectadas)
+======== TODAS LAS PRUEBAS PASARON ========
+▶ Ejecutando prueba de concurrencia
+   comprador rechazado → Existencias insuficientes: Última unidad (necesario 1, disponible 0.000 unidad)
+OK  C01 dos compras simultáneas de la última unidad: solo una se confirma (pedidos=1, reservado=1.000)
+▶ Listo. Puede eliminar la base con: dropdb miraliz_test

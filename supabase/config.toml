@@ -1,0 +1,11 @@
+# Configuración mínima para Supabase CLI.
+# Si ejecuta `npx supabase init` en este proyecto, conserve las secciones de funciones.
+project_id = "cotillon-miraliz"
+
+[functions.create-card-payment]
+# Requiere un usuario autenticado (JWT de Supabase en Authorization).
+verify_jwt = true
+
+[functions.stripe-webhook]
+# Stripe no envía JWT de Supabase: la autenticidad se verifica con la firma del webhook.
+verify_jwt = false

@@ -1,0 +1,17 @@
+running 9 tests from ./supabase/functions/tests/functions.test.ts
+webhook: rechaza métodos distintos de POST ... ok (19ms)
+webhook: rechaza solicitudes sin firma ... ok (713µs)
+webhook: rechaza firmas inválidas o contenido alterado ... ok (2ms)
+webhook: ignora eventos que no son de PaymentIntent ... ok (718µs)
+webhook: pago aprobado se envía a payment_apply_provider_result ... ok (13ms)
+webhook: fondos insuficientes → rechazado con motivo ... ok (2ms)
+webhook: si la BD falla responde 500 para que Stripe reintente ...
+------- output -------
+stripe-webhook: error al aplicar el resultado XX000
+----- output end -----
+webhook: si la BD falla responde 500 para que Stripe reintente ... ok (2ms)
+create-card-payment: exige sesión y configuración ... ok (908µs)
+cierre del servidor de prueba ... ok (396µs)
+
+ok | 9 passed | 0 failed (52ms)
+

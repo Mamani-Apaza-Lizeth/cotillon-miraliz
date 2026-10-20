@@ -1,0 +1,30 @@
+# Dependencias y compilados
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+
+# Variables de entorno con valores reales (NUNCA se suben)
+.env
+.env.local
+.env.*.local
+supabase/functions/.env
+supabase/.env
+
+# Supabase CLI (estado local)
+supabase/.branches/
+supabase/.temp/
+
+# Editores y sistema operativo
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+
+# Registros
+*.log
+npm-debug.log*
+
+# Deno (pruebas locales de Edge Functions)
+deno.lock

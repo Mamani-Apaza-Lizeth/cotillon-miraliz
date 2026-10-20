@@ -1,0 +1,1 @@
+Ejecutado el 2026-10-20T15:27:32-04:00 con scripts/e2e-local/run.sh. Resultado: flujo completo sin errores de consola (ERRORES []). Capturas: docs/evidencias/capturas/e2e_*.png
